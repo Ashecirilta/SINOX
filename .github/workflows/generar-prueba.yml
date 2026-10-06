@@ -1,0 +1,43 @@
+name: Generar prueba SINOX 100 obras
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generar data.js
+        run: python scripts/generar_data.py
+
+      - name: Validar 100 obras
+        run: |
+          python - <<'PY'
+          import re, json
+          s=open("data.js", encoding="utf-8").read()
+          data=json.loads(re.match(r"const SINOX_ITEMS=(.*);", s, re.S).group(1))
+          assert len(data)==100
+          assert len({x["id"] for x in data})==100
+          assert all(x.get("image") for x in data)
+          print("VALIDADO:", len(data), "obras únicas")
+          PY
+
+      - name: Guardar data.js en el repositorio
+        run: |
+          git config user.name "SINOX bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Prueba: 100 obras reales y distintas"
+          git push
