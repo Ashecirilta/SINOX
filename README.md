@@ -1,8 +1,5 @@
-# SINOX v3 ESTABLE
-Esta versión NO consulta la API al abrir la web.
-Las 100 entradas están ya en `data.js`, así la primera tarjeta aparece inmediatamente.
-Precarga las 3 siguientes.
-
-IMPORTANTE: este paquete usa temporalmente las 10 obras conocidas repetidas hasta 100
-solo para comprobar la nueva arquitectura y la velocidad. El siguiente paso es que un
-automatismo genere `data.js` diariamente con 100 obras únicas.
+# SINOX LIMPIO 100
+Reconstrucción limpia. No hace llamadas a APIs al arrancar.
+`data.js` contiene exactamente 100 tarjetas. Para esta prueba técnica son 10 obras conocidas repetidas 10 veces.
+Objetivo de esta versión: validar carga inmediata, 1/100, swipe, botones y resultado.
+Después se sustituye el contenido de `data.js` por 100 obras únicas generadas automáticamente cada día.
