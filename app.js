@@ -13,7 +13,7 @@ function seededShuffle(a,seed){
   for(let i=out.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[out[i],out[j]]=[out[j],out[i]]}
   return out;
 }
-function cacheKey(){return `sinox-v2-${dayKey()}`}
+function cacheKey(){return `sinox-v21-${dayKey()}`}
 function save(items){localStorage.setItem(cacheKey(),JSON.stringify({t:Date.now(),items}))}
 function load(){
   try{
@@ -23,47 +23,29 @@ function load(){
   return null;
 }
 async function json(url){const r=await fetch(url);if(!r.ok)throw new Error(r.status);return r.json()}
-async function fetchCategory(cat,index){
-  const search=await json(`${API}/search?hasImages=true&isPublicDomain=true&q=${encodeURIComponent(cat.query)}`);
-  const ids=seededShuffle(search.objectIDs||[],hash(dayKey()+cat.name)).slice(0,Math.max(24,SINOX_CONFIG.perCategory*3));
+async function fetchObjects(ids, limit){
   const objects=[];
-  // Pedimos candidatos por tandas y paramos al tener 10 válidos.
-  for(let p=0;p<ids.length && objects.length<SINOX_CONFIG.perCategory;p+=6){
-    const batch=await Promise.all(ids.slice(p,p+6).map(id=>json(`${API}/objects/${id}`).catch(()=>null)));
+  for(let p=0;p<ids.length && objects.length<limit;p+=4){
+    const batch=await Promise.all(ids.slice(p,p+4).map(id=>json(`${API}/objects/${id}`).catch(()=>null)));
     for(const o of batch){
-      if(!o||!o.primaryImageSmall||o.isPublicDomain!==true)continue;
+      if(!o||!o.primaryImageSmall||o.isPublicDomain!==true) continue;
       objects.push({
         id:o.objectID,
-        category:cat.name,
+        category:o.classification||o.objectName||"Descubrimiento",
         title:o.title||"Sin título",
         author:o.artistDisplayName||o.culture||o.period||"Autor desconocido",
         image:o.primaryImageSmall,
         objectURL:o.objectURL||""
       });
-      if(objects.length>=SINOX_CONFIG.perCategory)break;
+      if(objects.length>=limit) break;
     }
   }
   return objects;
 }
 async function buildDaily(){
-  const groups=await Promise.all(SINOX_CONFIG.categories.map(fetchCategory));
-  let items=groups.flat();
-  // Si alguna categoría devuelve menos, completamos con candidatos generales ya válidos.
-  if(items.length<SINOX_CONFIG.dailyCount){
-    const extraSearch=await json(`${API}/search?hasImages=true&isPublicDomain=true&q=art`);
-    const used=new Set(items.map(x=>x.id));
-    const ids=seededShuffle(extraSearch.objectIDs||[],hash(dayKey()+"extra")).filter(id=>!used.has(id)).slice(0,120);
-    for(let p=0;p<ids.length && items.length<SINOX_CONFIG.dailyCount;p+=8){
-      const batch=await Promise.all(ids.slice(p,p+8).map(id=>json(`${API}/objects/${id}`).catch(()=>null)));
-      for(const o of batch){
-        if(o&&o.primaryImageSmall&&o.isPublicDomain===true&&!used.has(o.objectID)){
-          used.add(o.objectID);
-          items.push({id:o.objectID,category:"Descubrimiento",title:o.title||"Sin título",author:o.artistDisplayName||o.culture||"Autor desconocido",image:o.primaryImageSmall,objectURL:o.objectURL||""});
-          if(items.length>=SINOX_CONFIG.dailyCount)break;
-        }
-      }
-    }
-  }
+  const search=await json(`${API}/search?hasImages=true&isPublicDomain=true&q=${encodeURIComponent("art")}`);
+  const ids=seededShuffle(search.objectIDs||[],hash(dayKey()+"sinox100")).slice(0,300);
+  const items=await fetchObjects(ids,SINOX_CONFIG.dailyCount);
   return seededShuffle(items,hash(dayKey()+"final")).slice(0,SINOX_CONFIG.dailyCount);
 }
 function preload(){
