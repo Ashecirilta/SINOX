@@ -1,13 +1,20 @@
-# SINOX
+# SINOX v2
 
-**Elígete a ti.**
+Versión experimental separada de la v1 pública.
 
-Versión 1: 10 elecciones visuales mediante swipe o botones.
+## Qué hace
+- Genera automáticamente una selección diaria de 100 obras.
+- Intenta equilibrar 10 categorías, 10 piezas por categoría.
+- Usa únicamente resultados marcados como dominio público por la API pública de The Metropolitan Museum of Art.
+- Guarda la selección del día en el navegador para no reconstruirla en cada visita.
+- Precarga las 3 imágenes siguientes.
+- Mantiene swipe NO/SÍ y el resumen final “Tus SÍ”.
 
-## Estructura
-- `index.html`: pantalla.
-- `style.css`: aspecto visual.
-- `app.js`: swipe y resultados.
-- `data.js`: catálogo de obras. Para cambiar o añadir imágenes, este es el archivo principal a editar.
+## Archivos
+- `index.html`: interfaz.
+- `style.css`: diseño.
+- `config.js`: reglas fáciles de modificar.
+- `app.js`: motor.
 
-Las imágenes de esta versión proceden de obras Open Access / dominio público de The Metropolitan Museum of Art.
+## Importante
+Esta v2 consulta la API del museo desde el navegador. La primera carga de cada día necesita conexión y puede tardar más que las siguientes. La v1 pública no debe sustituirse hasta probar esta versión.
