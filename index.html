@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f3ee">
+  <title>SINOX · Elígete a ti.</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="brand">
+    <h1>SINOX</h1>
+    <p>Elígete a ti.</p>
+  </header>
+
+  <section id="game" aria-live="polite">
+    <div class="topline"><span id="counter">1 / 10</span></div>
+    <div id="card" class="card">
+      <div class="loading" id="loading">Cargando…</div>
+      <img id="art" alt="">
+      <div class="stamp no-stamp" id="noStamp">NO</div>
+      <div class="stamp yes-stamp" id="yesStamp">SÍ</div>
+    </div>
+    <div class="actions">
+      <button id="noBtn" class="vote" type="button">← NO</button>
+      <button id="yesBtn" class="vote" type="button">SÍ →</button>
+    </div>
+  </section>
+
+  <section id="results" class="results" hidden>
+    <p class="eyebrow">Tu selección</p>
+    <h2>Tus SÍ</h2>
+    <div id="yesGrid" class="grid"></div>
+    <button id="restartBtn" class="restart" type="button">Volver a empezar</button>
+  </section>
+</main>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
