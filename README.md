@@ -1,20 +1,8 @@
-# SINOX v2
+# SINOX v3 ESTABLE
+Esta versión NO consulta la API al abrir la web.
+Las 100 entradas están ya en `data.js`, así la primera tarjeta aparece inmediatamente.
+Precarga las 3 siguientes.
 
-Versión experimental separada de la v1 pública.
-
-## Qué hace
-- Genera automáticamente una selección diaria de 100 obras.
-- Intenta equilibrar 10 categorías, 10 piezas por categoría.
-- Usa únicamente resultados marcados como dominio público por la API pública de The Metropolitan Museum of Art.
-- Guarda la selección del día en el navegador para no reconstruirla en cada visita.
-- Precarga las 3 imágenes siguientes.
-- Mantiene swipe NO/SÍ y el resumen final “Tus SÍ”.
-
-## Archivos
-- `index.html`: interfaz.
-- `style.css`: diseño.
-- `config.js`: reglas fáciles de modificar.
-- `app.js`: motor.
-
-## Importante
-Esta v2 consulta la API del museo desde el navegador. La primera carga de cada día necesita conexión y puede tardar más que las siguientes. La v1 pública no debe sustituirse hasta probar esta versión.
+IMPORTANTE: este paquete usa temporalmente las 10 obras conocidas repetidas hasta 100
+solo para comprobar la nueva arquitectura y la velocidad. El siguiente paso es que un
+automatismo genere `data.js` diariamente con 100 obras únicas.

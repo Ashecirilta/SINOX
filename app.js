@@ -13,7 +13,7 @@ function seededShuffle(a,seed){
   for(let i=out.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[out[i],out[j]]=[out[j],out[i]]}
   return out;
 }
-function cacheKey(){return `sinox-v21-${dayKey()}`}
+function cacheKey(){return `sinox-v2-${dayKey()}`}
 function save(items){localStorage.setItem(cacheKey(),JSON.stringify({t:Date.now(),items}))}
 function load(){
   try{
@@ -21,32 +21,6 @@ function load(){
     if(x&&Array.isArray(x.items)&&x.items.length>=SINOX_CONFIG.dailyCount) return x.items;
   }catch(e){}
   return null;
-}
-async function json(url){const r=await fetch(url);if(!r.ok)throw new Error(r.status);return r.json()}
-async function fetchObjects(ids, limit){
-  const objects=[];
-  for(let p=0;p<ids.length && objects.length<limit;p+=4){
-    const batch=await Promise.all(ids.slice(p,p+4).map(id=>json(`${API}/objects/${id}`).catch(()=>null)));
-    for(const o of batch){
-      if(!o||!o.primaryImageSmall||o.isPublicDomain!==true) continue;
-      objects.push({
-        id:o.objectID,
-        category:o.classification||o.objectName||"Descubrimiento",
-        title:o.title||"Sin título",
-        author:o.artistDisplayName||o.culture||o.period||"Autor desconocido",
-        image:o.primaryImageSmall,
-        objectURL:o.objectURL||""
-      });
-      if(objects.length>=limit) break;
-    }
-  }
-  return objects;
-}
-async function buildDaily(){
-  const search=await json(`${API}/search?hasImages=true&isPublicDomain=true&q=${encodeURIComponent("art")}`);
-  const ids=seededShuffle(search.objectIDs||[],hash(dayKey()+"sinox100")).slice(0,300);
-  const items=await fetchObjects(ids,SINOX_CONFIG.dailyCount);
-  return seededShuffle(items,hash(dayKey()+"final")).slice(0,SINOX_CONFIG.dailyCount);
 }
 function preload(){
   for(let n=1;n<=SINOX_CONFIG.preloadAhead;n++){
@@ -88,13 +62,18 @@ function dragEnd(){
   if(!state.drag)return;state.drag=false;$("#card").style.transition="";
   if(Math.abs(state.dx)>85)vote(state.dx>0);else render();
 }
-async function start(){
+function start(){
   try{
-    let items=load();
-    if(!items){items=await buildDaily(); if(items.length<20)throw new Error("Muy pocas obras"); save(items)}
-    state.items=items.slice(0,SINOX_CONFIG.dailyCount);
-    $("#loading").classList.add("hidden");$("#game").classList.remove("hidden");render();
-  }catch(e){console.error(e);$("#loading").classList.add("hidden");$("#error").classList.remove("hidden")}
+    if(!Array.isArray(window.SINOX_DAILY) || !window.SINOX_DAILY.length) throw new Error("Catálogo vacío");
+    state.items=window.SINOX_DAILY.slice(0,SINOX_CONFIG.dailyCount);
+    $("#loading").classList.add("hidden");
+    $("#game").classList.remove("hidden");
+    render();
+  }catch(e){
+    console.error(e);
+    $("#loading").classList.add("hidden");
+    $("#error").classList.remove("hidden");
+  }
 }
 $("#yesBtn").addEventListener("click",()=>vote(true));$("#noBtn").addEventListener("click",()=>vote(false));
 $("#restartBtn").addEventListener("click",()=>{state.i=0;state.yes=[];$("#results").classList.add("hidden");$("#game").classList.remove("hidden");render()});
