@@ -1,0 +1,12 @@
+[
+ {"titulo":"La gran ola de Kanagawa","autor":"Katsushika Hokusai","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/The_Great_Wave_off_Kanagawa.jpg"},
+ {"titulo":"La noche estrellada","autor":"Vincent van Gogh","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"},
+ {"titulo":"El nacimiento de Venus","autor":"Sandro Botticelli","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"},
+ {"titulo":"El beso","autor":"Gustav Klimt","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg"},
+ {"titulo":"American Gothic","autor":"Grant Wood","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Grant_Wood_-_American_Gothic_-_Google_Art_Project.jpg"},
+ {"titulo":"La joven de la perla","autor":"Johannes Vermeer","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Meisje_met_de_parel.jpg"},
+ {"titulo":"Las meninas","autor":"Diego Velázquez","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Las_Meninas_01.jpg"},
+ {"titulo":"Impresión, sol naciente","autor":"Claude Monet","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Monet,_Impression,_soleil_levant.jpg"},
+ {"titulo":"El caminante sobre el mar de nubes","autor":"Caspar David Friedrich","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"},
+ {"titulo":"El jardín de las delicias","autor":"El Bosco","imagen":"https://commons.wikimedia.org/wiki/Special:FilePath/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg"}
+]
